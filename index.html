@@ -1,0 +1,56 @@
+
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sterile Stock Alert V2</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f3f4f6;padding:20px}
+.card{background:#fff;border-radius:18px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,.08);margin-bottom:20px}
+h1{color:#1e3a8a}
+.badge{display:inline-block;background:#dbeafe;color:#1e40af;padding:6px 12px;border-radius:999px;margin:4px;font-weight:bold}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border:1px solid #ddd;padding:10px;text-align:left}
+.table th{background:#eff6ff}
+</style>
+</head>
+<body>
+
+<div class="card">
+<h1>Sterile Stock Alert Web App V2</h1>
+<p>รองรับหลายวันเข้าคลังต่อสินค้า</p>
+
+<h3>ตัวอย่างการแสดงผล</h3>
+<div class="badge">16/5/26 = 7,200</div>
+<div class="badge">23/5/26 = 3,600</div>
+
+<p><b>รวมทั้งหมด:</b> 10,800</p>
+</div>
+
+<div class="card">
+<h2>ตัวอย่างตารางสถานะสินค้า</h2>
+<table class="table">
+<thead>
+<tr>
+<th>สินค้า</th>
+<th>รวมเข้าคลัง</th>
+<th>แผนเข้าคลัง</th>
+<th>สถานะ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DU-0801</td>
+<td>10,800</td>
+<td>
+16/5/26 = 7,200<br>
+23/5/26 = 3,600
+</td>
+<td>Waiting Incoming</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+</body>
+</html>
