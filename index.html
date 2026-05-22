@@ -96,7 +96,23 @@ function statusOf(x){if(x.critical>0)return'CRITICAL';if(x.below>0&&totalPlan(x)
 function stLabel(s){return{CRITICAL:'Critical',NO_PLAN:'ต่ำกว่า Min / ยังไม่มีกำหนด',WAITING:'มีแผนเข้าคลัง',WPX:'ติด WPX / ค้างส่ง',NORMAL:'Normal'}[s]}
 function stClass(s){return{CRITICAL:'red',NO_PLAN:'orange',WAITING:'yellow',WPX:'blue',NORMAL:'green'}[s]}
 
-function filtered(){let g=groupF.value,st=statusF.value,q=search.value.toLowerCase();return rawData.filter(x=>{if(g!='ALL'&&x.group!=g)return false;if(st=='BELOW_MIN'&&x.below<=0)return false;elseif(st==='BELOW_MIN' && x.below<=0) return false;
+function filtered(){let g = groupF.value;
+  let st = statusF.value;
+  let q = search.value.toLowerCase();
+
+  return rawData.filter(x=>{
+    if(g !== 'ALL' && x.group !== g) return false;
+
+    if(st === 'BELOW_MIN' && x.below <= 0) return false;
+    if(st === 'CRITICAL' && x.critical <= 0) return false;
+    if(st === 'WPX' && x.wpx >= 0) return false;
+    if(st === 'WAITING' && totalPlan(x) <= 0) return false;
+    if(st === 'NO_PLAN' && totalPlan(x) > 0) return false;
+    if(st === 'NORMAL' && statusOf(x) !== 'NORMAL') return false;
+
+    if(q && !(`${x.code} ${x.name}`.toLowerCase().includes(q))) return false;
+
+    return true;
 if(st==='WPX' && x.wpx>=0) return false;
 if(st==='WAITING' && totalPlan(x)<=0) return false;
 if(st==='NO_PLAN' && totalPlan(x)>0) return false;
