@@ -96,7 +96,12 @@ function statusOf(x){if(x.critical>0)return'CRITICAL';if(x.below>0&&totalPlan(x)
 function stLabel(s){return{CRITICAL:'Critical',NO_PLAN:'ต่ำกว่า Min / ยังไม่มีกำหนด',WAITING:'มีแผนเข้าคลัง',WPX:'ติด WPX / ค้างส่ง',NORMAL:'Normal'}[s]}
 function stClass(s){return{CRITICAL:'red',NO_PLAN:'orange',WAITING:'yellow',WPX:'blue',NORMAL:'green'}[s]}
 
-function filtered(){let g=groupF.value,st=statusF.value,q=search.value.toLowerCase();return rawData.filter(x=>{if(g!='ALL'&&x.group!=g)return false;if(st=='BELOW_MIN'&&x.below<=0)return false;else if(st!='ALL'&&st!='BELOW_MIN'&&statusOf(x)!=st)return false;if(q&&!(`${x.code} ${x.name}`.toLowerCase().includes(q)))return false;return true})}
+function filtered(){let g=groupF.value,st=statusF.value,q=search.value.toLowerCase();return rawData.filter(x=>{if(g!='ALL'&&x.group!=g)return false;if(st=='BELOW_MIN'&&x.below<=0)return false;elseif(st==='BELOW_MIN' && x.below<=0) return false;
+if(st==='WPX' && x.wpx>=0) return false;
+if(st==='WAITING' && totalPlan(x)<=0) return false;
+if(st==='NO_PLAN' && totalPlan(x)>0) return false;
+if(st==='CRITICAL' && x.critical<=0) return false;
+if(st==='NORMAL' && statusOf(x)!=='NORMAL') return false; })}
 function render(){setCutoff();let d=filtered();kTotal.textContent=rawData.length;kBelow.textContent=rawData.filter(x=>x.below>0).length;kCritical.textContent=rawData.filter(x=>x.critical>0).length;kWPX.textContent=rawData.filter(x=>x.wpx<0).length;kIncoming.textContent=rawData.filter(x=>totalPlan(x)>0).length;note.textContent=`แสดง ${d.length} รายการ จากทั้งหมด ${rawData.length} รายการ`;
 tbl.innerHTML=`<thead><tr><th>สถานะ</th><th>กลุ่ม</th><th>รหัสสินค้า</th><th>ชื่อสินค้า</th><th>หน่วย</th><th>Min</th><th>ต่ำกว่า Min</th><th>Critical</th><th>WPX</th><th>รวมเข้าคลัง</th><th>แผนเข้าคลัง</th><th>หมายเหตุ</th></tr></thead><tbody>`+
 d.map(x=>`<tr><td><span class="badge ${stClass(statusOf(x))}">${stLabel(statusOf(x))}</span></td><td>${x.group}</td><td><b>${x.code}</b></td><td>${x.name}</td><td>${x.unit}</td><td class="num">${x.min.toLocaleString()}</td><td class="num">${x.below.toLocaleString()}</td><td class="num">${x.critical.toLocaleString()}</td><td class="num">${x.wpx.toLocaleString()}</td><td class="num">${totalPlan(x).toLocaleString()}</td><td>${planHtml(x)}</td><td>${x.remark}</td></tr>`).join('')+'</tbody>';
